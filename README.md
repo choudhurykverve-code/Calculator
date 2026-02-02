@@ -79,32 +79,6 @@ python integration_app.py
    - `derivative_calculator.html` for derivatives
    - `integration_calculator.html` for integrals
 
----
-
-## 📁 Project Structure
-
-```
-mathematical-calculators/
-│
-├── Basic Calculator/
-│   ├── calculator.html          # Frontend
-│   ├── app.py                   # Backend
-│   └── requirements.txt         # Dependencies
-│
-├── Derivative Calculator/
-│   ├── derivative_calculator.html
-│   ├── derivative_app.py
-│   └── derivative_requirements.txt
-│
-├── Integration Calculator/
-│   ├── integration_calculator.html
-│   ├── integration_app.py
-│   └── integration_requirements.txt
-│
-└── README.md                    # This file
-```
-
----
 
 ## 🎯 How to Use Each Calculator
 
