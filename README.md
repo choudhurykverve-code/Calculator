@@ -282,25 +282,6 @@ Response:
 
 ---
 
-## 🌿 Git Branch Structure (Recommended)
-
-```
-main/
-├── calculator.html
-├── app.py
-└── requirements.txt
-
-derivative-calculator/
-├── derivative_calculator.html
-├── derivative_app.py
-└── derivative_requirements.txt
-
-integration-calculator/
-├── integration_calculator.html
-├── integration_app.py
-└── integration_requirements.txt
-```
-
 **Creating branches:**
 ```bash
 # Create derivative calculator branch
