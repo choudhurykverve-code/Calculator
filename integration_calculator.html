@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integration Calculator</title>
+    <title>Branch - Integration Calculator</title>
     <style>
         * {
             margin: 0;
@@ -56,7 +57,8 @@
             font-size: 15px;
         }
 
-        input[type="text"], input[type="number"] {
+        input[type="text"],
+        input[type="number"] {
             width: 100%;
             padding: 14px;
             border: 2px solid #e0e0e0;
@@ -66,7 +68,8 @@
             transition: border-color 0.3s;
         }
 
-        input[type="text"]:focus, input[type="number"]:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus {
             outline: none;
             border-color: #f093fb;
         }
@@ -99,7 +102,7 @@
             font-weight: 500;
         }
 
-        .radio-option input[type="radio"]:checked + .radio-label {
+        .radio-option input[type="radio"]:checked+.radio-label {
             background: #f093fb;
             color: white;
             border-color: #f093fb;
@@ -283,14 +286,16 @@
         }
     </style>
 </head>
+
 <body>
     <div class="calculator">
         <h1>∫ Integration Calculator</h1>
         <div class="subtitle">Symbolic integration with step-by-step solutions</div>
-        
+
         <div class="info-box">
             <h3>📚 How to use:</h3>
-            <p>Enter a mathematical function to integrate. Choose between indefinite (∫f(x)dx) or definite integration (∫[a,b]f(x)dx).</p>
+            <p>Enter a mathematical function to integrate. Choose between indefinite (∫f(x)dx) or definite integration
+                (∫[a,b]f(x)dx).</p>
         </div>
 
         <div class="input-group">
@@ -298,10 +303,10 @@
             <input type="text" id="function" placeholder="e.g., x^2 + 3*x + 5" value="x^2 + 3*x">
             <div class="examples">
                 <strong>Examples:</strong>
-                <code>x^2 + 3*x</code> | 
-                <code>sin(x)</code> | 
-                <code>e^x</code> | 
-                <code>1/x</code> | 
+                <code>x^2 + 3*x</code> |
+                <code>sin(x)</code> |
+                <code>e^x</code> |
+                <code>1/x</code> |
                 <code>cos(x)^2</code>
             </div>
         </div>
@@ -348,11 +353,11 @@
             <div class="result-section">
                 <div class="result-label" id="result-type-label">Integral:</div>
                 <div class="result-value" id="result">-</div>
-                
+
                 <div id="constant-note" class="constant-note" style="display: none;">
                     Note: For indefinite integrals, the constant of integration (+ C) is implicit.
                 </div>
-                
+
                 <div id="steps-container" style="display: none;">
                     <div class="steps-section">
                         <div class="result-label">Steps:</div>
@@ -371,7 +376,7 @@
 
         // Toggle definite integral inputs
         document.querySelectorAll('input[name="integration-type"]').forEach(radio => {
-            radio.addEventListener('change', function() {
+            radio.addEventListener('change', function () {
                 const definiteInputs = document.getElementById('definite-inputs');
                 if (this.value === 'definite') {
                     definiteInputs.classList.add('active');
@@ -387,7 +392,7 @@
             const integrationType = document.querySelector('input[name="integration-type"]:checked').value;
             const lowerBound = document.getElementById('lower-bound').value.trim();
             const upperBound = document.getElementById('upper-bound').value.trim();
-            
+
             const messageDiv = document.getElementById('message');
             const resultDiv = document.getElementById('result');
             const resultContainer = document.getElementById('result-container');
@@ -444,7 +449,7 @@
                     // Display result
                     resultDiv.textContent = data.result;
                     resultContainer.style.display = 'block';
-                    
+
                     // Update label based on type
                     if (integrationType === 'indefinite') {
                         resultTypeLabel.textContent = 'Indefinite Integral:';
@@ -452,7 +457,7 @@
                     } else {
                         resultTypeLabel.textContent = `Definite Integral [${lowerBound}, ${upperBound}]:`;
                     }
-                    
+
                     // Display steps if available
                     if (data.steps && data.steps.length > 0) {
                         stepsDiv.innerHTML = '';
@@ -464,7 +469,7 @@
                         });
                         stepsContainer.style.display = 'block';
                     }
-                    
+
                     messageDiv.innerHTML = '';
                 } else {
                     // Display error from backend
@@ -492,17 +497,18 @@
         }
 
         // Allow Enter key to trigger calculation
-        document.getElementById('function').addEventListener('keypress', function(e) {
+        document.getElementById('function').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 calculateIntegral();
             }
         });
 
-        document.getElementById('variable').addEventListener('keypress', function(e) {
+        document.getElementById('variable').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 calculateIntegral();
             }
         });
     </script>
 </body>
+
 </html>
