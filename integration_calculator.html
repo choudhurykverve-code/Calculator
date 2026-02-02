@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branch - Integration Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+        }
+
+        .calculator {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 550px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #f093fb;
+        }
+
+        .integration-type {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .radio-label {
+            display: block;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .radio-option input[type="radio"]:checked+.radio-label {
+            background: #f093fb;
+            color: white;
+            border-color: #f093fb;
+        }
+
+        .radio-label:hover {
+            border-color: #f093fb;
+        }
+
+        .definite-inputs {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .definite-inputs.active {
+            display: block;
+        }
+
+        .bounds-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .examples {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .examples strong {
+            color: #f093fb;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .examples code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #333;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .calc-btn {
+            background: #f093fb;
+            color: white;
+        }
+
+        .calc-btn:hover {
+            background: #e082ea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        .calc-btn:active {
+            transform: translateY(0);
+        }
+
+        .clear-btn {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .clear-btn:hover {
+            background: #d0d0d0;
+        }
+
+        .result-section {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .result-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .result-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #f093fb;
+            font-family: 'Courier New', monospace;
+            word-wrap: break-word;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .steps-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .step {
+            margin-bottom: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #ffeaea;
+            border-radius: 6px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .loading {
+            color: #f093fb;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .info-box {
+            background: #fef3f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f093fb;
+        }
+
+        .info-box h3 {
+            color: #f093fb;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #555;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .constant-note {
+            background: #fff9e6;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #856404;
+            border-left: 3px solid #ffc107;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <h1>∫ Integration Calculator</h1>
+        <div class="subtitle">Symbolic integration with step-by-step solutions</div>
+
+        <div class="info-box">
+            <h3>📚 How to use:</h3>
+            <p>Enter a mathematical function to integrate. Choose between indefinite (∫f(x)dx) or definite integration
+                (∫[a,b]f(x)dx).</p>
+        </div>
+
+        <div class="input-group">
+            <label for="function">Function f(x):</label>
+            <input type="text" id="function" placeholder="e.g., x^2 + 3*x + 5" value="x^2 + 3*x">
+            <div class="examples">
+                <strong>Examples:</strong>
+                <code>x^2 + 3*x</code> |
+                <code>sin(x)</code> |
+                <code>e^x</code> |
+                <code>1/x</code> |
+                <code>cos(x)^2</code>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="variable">Variable (optional):</label>
+            <input type="text" id="variable" placeholder="x" value="x">
+        </div>
+
+        <div class="input-group">
+            <label>Integration Type:</label>
+            <div class="integration-type">
+                <div class="radio-option">
+                    <input type="radio" id="indefinite" name="integration-type" value="indefinite" checked>
+                    <label for="indefinite" class="radio-label">Indefinite ∫f(x)dx</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="definite" name="integration-type" value="definite">
+                    <label for="definite" class="radio-label">Definite ∫[a,b]f(x)dx</label>
+                </div>
+            </div>
+
+            <div id="definite-inputs" class="definite-inputs">
+                <label style="margin-bottom: 10px; display: block;">Integration Bounds:</label>
+                <div class="bounds-group">
+                    <div>
+                        <label for="lower-bound" style="font-size: 13px; margin-bottom: 5px;">Lower Bound (a):</label>
+                        <input type="text" id="lower-bound" placeholder="0">
+                    </div>
+                    <div>
+                        <label for="upper-bound" style="font-size: 13px; margin-bottom: 5px;">Upper Bound (b):</label>
+                        <input type="text" id="upper-bound" placeholder="1">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="calc-btn" onclick="calculateIntegral()">Calculate Integral</button>
+            <button class="clear-btn" onclick="clearAll()">Clear</button>
+        </div>
+
+        <div id="result-container" style="display: none;">
+            <div class="result-section">
+                <div class="result-label" id="result-type-label">Integral:</div>
+                <div class="result-value" id="result">-</div>
+
+                <div id="constant-note" class="constant-note" style="display: none;">
+                    Note: For indefinite integrals, the constant of integration (+ C) is implicit.
+                </div>
+
+                <div id="steps-container" style="display: none;">
+                    <div class="steps-section">
+                        <div class="result-label">Steps:</div>
+                        <div id="steps"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // Change this to your backend URL when running
+        const API_URL = 'http://localhost:5000/integrate';
+
+        // Toggle definite integral inputs
+        document.querySelectorAll('input[name="integration-type"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                const definiteInputs = document.getElementById('definite-inputs');
+                if (this.value === 'definite') {
+                    definiteInputs.classList.add('active');
+                } else {
+                    definiteInputs.classList.remove('active');
+                }
+            });
+        });
+
+        async function calculateIntegral() {
+            const functionInput = document.getElementById('function').value.trim();
+            const variableInput = document.getElementById('variable').value.trim() || 'x';
+            const integrationType = document.querySelector('input[name="integration-type"]:checked').value;
+            const lowerBound = document.getElementById('lower-bound').value.trim();
+            const upperBound = document.getElementById('upper-bound').value.trim();
+
+            const messageDiv = document.getElementById('message');
+            const resultDiv = document.getElementById('result');
+            const resultContainer = document.getElementById('result-container');
+            const stepsContainer = document.getElementById('steps-container');
+            const stepsDiv = document.getElementById('steps');
+            const constantNote = document.getElementById('constant-note');
+            const resultTypeLabel = document.getElementById('result-type-label');
+
+            // Clear previous messages
+            messageDiv.innerHTML = '';
+            stepsContainer.style.display = 'none';
+            constantNote.style.display = 'none';
+
+            // Validate inputs
+            if (!functionInput) {
+                messageDiv.innerHTML = '<div class="error">Please enter a function!</div>';
+                return;
+            }
+
+            if (integrationType === 'definite' && (!lowerBound || !upperBound)) {
+                messageDiv.innerHTML = '<div class="error">Please enter both lower and upper bounds for definite integration!</div>';
+                return;
+            }
+
+            // Show loading
+            messageDiv.innerHTML = '<div class="loading">Calculating integral...</div>';
+            resultContainer.style.display = 'none';
+
+            try {
+                // Prepare request data
+                const requestData = {
+                    function: functionInput,
+                    variable: variableInput,
+                    type: integrationType
+                };
+
+                if (integrationType === 'definite') {
+                    requestData.lower_bound = lowerBound;
+                    requestData.upper_bound = upperBound;
+                }
+
+                // Send request to Python backend
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Display result
+                    resultDiv.textContent = data.result;
+                    resultContainer.style.display = 'block';
+
+                    // Update label based on type
+                    if (integrationType === 'indefinite') {
+                        resultTypeLabel.textContent = 'Indefinite Integral:';
+                        constantNote.style.display = 'block';
+                    } else {
+                        resultTypeLabel.textContent = `Definite Integral [${lowerBound}, ${upperBound}]:`;
+                    }
+
+                    // Display steps if available
+                    if (data.steps && data.steps.length > 0) {
+                        stepsDiv.innerHTML = '';
+                        data.steps.forEach(step => {
+                            const stepDiv = document.createElement('div');
+                            stepDiv.className = 'step';
+                            stepDiv.textContent = step;
+                            stepsDiv.appendChild(stepDiv);
+                        });
+                        stepsContainer.style.display = 'block';
+                    }
+
+                    messageDiv.innerHTML = '';
+                } else {
+                    // Display error from backend
+                    messageDiv.innerHTML = `<div class="error">${data.error}</div>`;
+                    resultContainer.style.display = 'none';
+                }
+            } catch (error) {
+                messageDiv.innerHTML = '<div class="error">Error connecting to server. Make sure the Python backend is running on port 5000!</div>';
+                console.error('Error:', error);
+                resultContainer.style.display = 'none';
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('function').value = '';
+            document.getElementById('variable').value = 'x';
+            document.getElementById('lower-bound').value = '';
+            document.getElementById('upper-bound').value = '';
+            document.getElementById('indefinite').checked = true;
+            document.getElementById('definite-inputs').classList.remove('active');
+            document.getElementById('result').textContent = '-';
+            document.getElementById('message').innerHTML = '';
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('steps-container').style.display = 'none';
+        }
+
+        // Allow Enter key to trigger calculation
+        document.getElementById('function').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                calculateIntegral();
+            }
+        });
+
+        document.getElementById('variable').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                calculateIntegral();
+            }
+        });
+    </script>
+</body>
+
+</html>
