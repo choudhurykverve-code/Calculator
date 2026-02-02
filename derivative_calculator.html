@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Derivative Calculator</title>
+    <title>Branch - Derivative Calculator</title>
     <style>
         * {
             margin: 0;
@@ -217,14 +218,16 @@
         }
     </style>
 </head>
+
 <body>
     <div class="calculator">
         <h1>Derivative Calculator</h1>
         <div class="subtitle">Symbolic differentiation with step-by-step solutions</div>
-        
+
         <div class="info-box">
             <h3>📚 How to use:</h3>
-            <p>Enter a mathematical function and optionally specify the variable to differentiate with respect to (default is 'x').</p>
+            <p>Enter a mathematical function and optionally specify the variable to differentiate with respect to
+                (default is 'x').</p>
         </div>
 
         <div class="input-group">
@@ -232,9 +235,9 @@
             <input type="text" id="function" placeholder="e.g., x^2 + 3*x + 5" value="x^2 + 3*x + 5">
             <div class="examples">
                 <strong>Examples:</strong>
-                <code>x^2 + 3*x + 5</code> | 
-                <code>sin(x) + cos(x)</code> | 
-                <code>e^x * ln(x)</code> | 
+                <code>x^2 + 3*x + 5</code> |
+                <code>sin(x) + cos(x)</code> |
+                <code>e^x * ln(x)</code> |
                 <code>x^3 - 2*x^2 + x - 1</code>
             </div>
         </div>
@@ -256,7 +259,7 @@
             <div class="result-section">
                 <div class="result-label">Derivative:</div>
                 <div class="result-value" id="result">-</div>
-                
+
                 <div id="steps-container" style="display: none;">
                     <div class="steps-section">
                         <div class="result-label">Steps:</div>
@@ -315,7 +318,7 @@
                     // Display result
                     resultDiv.textContent = data.derivative;
                     resultContainer.style.display = 'block';
-                    
+
                     // Display steps if available
                     if (data.steps && data.steps.length > 0) {
                         stepsDiv.innerHTML = '';
@@ -327,7 +330,7 @@
                         });
                         stepsContainer.style.display = 'block';
                     }
-                    
+
                     messageDiv.innerHTML = '';
                 } else {
                     // Display error from backend
@@ -351,17 +354,18 @@
         }
 
         // Allow Enter key to trigger calculation
-        document.getElementById('function').addEventListener('keypress', function(e) {
+        document.getElementById('function').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 calculateDerivative();
             }
         });
 
-        document.getElementById('variable').addEventListener('keypress', function(e) {
+        document.getElementById('variable').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 calculateDerivative();
             }
         });
     </script>
 </body>
+
 </html>
